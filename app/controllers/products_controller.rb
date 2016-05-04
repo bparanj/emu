@@ -16,7 +16,7 @@ class ProductsController < ApplicationController
     if @product.save
       redirect_to products_url, notice: 'Product was successfully created.'
     else
-      render "new"
+      render :new
     end
   end
 
@@ -25,7 +25,7 @@ class ProductsController < ApplicationController
     if @product.update_attributes(allowed_params)
       redirect_to products_url, notice: 'Product was successfully updated.'
     else
-      render "edit"
+      render :edit
     end
   end
 
@@ -33,6 +33,12 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @product.destroy
     redirect_to products_url, notice: "Product was successfully destroyed."
+  end
+  
+  def discontinue
+    Product.where(id: params[:product_ids]).update_all(discontinued: true)
+    
+    redirect_to products_url
   end
   
   private
